@@ -1,186 +1,186 @@
-# 🤖 Tebak Kata - Robotika Edition
+# 🤖 Word Guessing - Robotics Edition
 
 ![C](https://img.shields.io/badge/language-C-blue.svg)
 ![Status](https://img.shields.io/badge/status-completed-brightgreen.svg)
-![Course](https://img.shields.io/badge/course-Pemrograman_Dasar-orange.svg)
+![Course](https://img.shields.io/badge/course-Basic_Programming-orange.svg)
 
-**Proyek Akhir Praktikum Dasar Pemrograman**
+**Final Project for Basic Programming Practicum**
 
-Aplikasi Command Line Interface <CLI> interaktif untuk permainan Hangman dengan tema terminologi Robotika dan Kecerdasan Buatan. Proyek ini dibangun dengan menerapkan prinsip _Software Engineering_ yang mencakup manajemen memori, _pointer arithmetic_, _binary search_, dan _insertion sort_.
+An interactive Command Line Interface <CLI> application for a Hangman game themed around Robotics and Artificial Intelligence terminology. This project is built applying _Software Engineering_ principles, including memory management, _pointer arithmetic_, _binary search_, and _insertion sort_.
 
 ---
 
-## 🛠️ Cara Kompilasi dan Menjalankan
+## 🛠️ Compilation and Execution
 
-Program ini ditulis dalam bahasa C murni dan dapat dikompilasi menggunakan `gcc`.
+This program is written in pure C and can be compiled using `gcc`.
 
-**1. Kompilasi Program**
-Buka terminal dan jalankan perintah berikut:
+**1. Compiling the Program**
+Open your terminal and run the following command:
 
 ```bash
-gcc -Wall -o tebak_kata tebak_kata.c
+gcc -Wall -o word_guess word_guess.c
 ```
 
-_Catatan: Flag `-Wall` digunakan untuk memastikan tidak ada warning pada saat kompilasi._
+_Note: The `-Wall` flag is used to ensure no warnings occur during compilation._
 
-**2. Menjalankan Program**
+**2. Running the Program**
 
 - **Linux / macOS:**
   ```bash
-  ./tebak_kata
+  ./word_guess
   ```
 - **Windows:**
   ```cmd
-  tebak_kata.exe
+  word_guess.exe
   ```
 
 ---
 
-## ✨ Daftar Fitur
+## ✨ Features List
 
-1.  **Main Game Baru:** Permainan tebak kata klasik. Pemain menebak huruf demi huruf dari kata rahasia yang dipilih secara acak.
-2.  **Sistem Skor Dinamis:** Perhitungan skor memperhitungkan sisa nyawa dan panjang kata rahasia <Rumus: Sisa Nyawa x 100 + Panjang Kata x 20>.
-3.  **Papan Peringkat <Hall of Fame>:** Menyimpan 10 pemain terbaik menggunakan algoritma _Bubble Sort_ secara menurun _<descending>_. Terintegrasi dengan `<time.h>` untuk pencatatan tanggal otomatis.
-4.  **Tambah Kata ke Bank:** Pemain dapat menambah perbendaharaan kata. Program otomatis mengecek duplikasi menggunakan algoritma _Binary Search_ O<log n>, lalu menyisipkannya sesuai urutan alfabet menggunakan _Insertion Sort_.
-5.  **Robust Input Handling:** Memiliki sistem _input buffer clearing_ untuk mencegah _infinite loop_ saat pengguna memasukkan karakter spasi atau input berlebih.
-
----
-
-## ⚠️ Keterbatasan yang Diketahui <Known Limitations>
-
-- **Penyimpanan Volatil:** Data bank kata baru dan Hall of Fame hanya tersimpan di dalam memori <RAM> selama program berjalan. Data akan _reset_ jika program ditutup karena belum menggunakan operasi _File I/O_.
-- **Kapasitas Tetap:** Bank kata dibatasi maksimal 50 entri `MAX_WORDS` dan Hall of Fame dibatasi 10 entri `HOF_SIZE`.
-- **Karakter Alfabet Saja:** Permainan saat ini belum menangani input angka atau simbol secara spesifik dalam kata rahasia, meskipun input dikonversi otomatis ke huruf kapital.
+1.  **Play New Game:** The classic word-guessing game. The player guesses letter by letter of a randomly selected secret word.
+2.  **Dynamic Scoring System:** Score calculation takes into account remaining lives and the length of the secret word <Formula: Remaining Lives x 100 + Word Length x 20>.
+3.  **Hall of Fame:** Saves the top 10 players using a _Bubble Sort_ algorithm in descending order. Integrated with `<time.h>` for automatic date recording.
+4.  **Add Word to Bank:** Players can expand the vocabulary bank. The program automatically checks for duplicates using a _Binary Search_ algorithm O<log n>, then inserts the new word alphabetically using _Insertion Sort_.
+5.  **Robust Input Handling:** Implements an _input buffer clearing_ system to prevent _infinite loops_ when users enter space characters or excessive input.
 
 ---
 
-## 📊 Flowchart Sistem Utama
+## ⚠️ Known Limitations
 
-Berikut adalah alur logika program yang digambarkan menggunakan Mermaid diagram. Sesuai standar, tanda kurung siku siku atau angle brackets digunakan untuk parameter penjelas.
+- **Volatile Storage:** Data for new words and the Hall of Fame is only stored in memory <RAM> while the program is running. Data will reset if the program is closed, as it does not yet utilize _File I/O_ operations.
+- **Fixed Capacity:** The word bank is limited to a maximum of 50 entries `MAX_WORDS`, and the Hall of Fame is limited to 10 entries `HOF_SIZE`.
+- **Alphabet Characters Only:** The game currently does not specifically handle number or symbol inputs within the secret word, although inputs are automatically converted to uppercase.
 
-### A. Alur Menu Utama
+---
+
+## 📊 Main System Flowcharts
+
+Below is the logical flow of the program depicted using Mermaid diagrams. As per standard practice, angle brackets are used for explanatory parameters.
+
+### A. Main Menu Flow
 
 ```mermaid
 flowchart TD
-    Start[Mulai Program] --> Init[Inisialisasi Random Seed]
-    Init --> Show[Tampilkan Menu Utama]
-    Show --> Input[Baca Pilihan Input]
-    Input --> Switch{Evaluasi Pilihan}
+    Start[Start Program] --> Init[Initialize Random Seed]
+    Init --> Show[Show Main Menu]
+    Show --> Input[Read Input Choice]
+    Input --> Switch{Evaluate Choice}
 
-    Switch -->|1| Play[Jalankan play_game]
-    Switch -->|2| HOF[Jalankan show_hall_of_fame]
-    Switch -->|3| Add[Jalankan add_word]
-    Switch -->|Lainnya| Invalid[Cetak Pesan Pilihan Tidak Valid]
-    Switch -->|0| Exit[Cetak Pesan Terima Kasih]
+    Switch -->|1| Play[Execute play_game]
+    Switch -->|2| HOF[Execute show_hall_of_fame]
+    Switch -->|3| Add[Execute add_word]
+    Switch -->|Other| Invalid[Print Invalid Choice Message]
+    Switch -->|0| Exit[Print Thank You Message]
 
     Play --> CheckLoop
     HOF --> CheckLoop
     Add --> CheckLoop
     Invalid --> CheckLoop
 
-    CheckLoop{Pilihan != 0 ?}
-    CheckLoop -->|Ya| Show
-    CheckLoop -->|Tidak| Selesai[Program Selesai Keluar]
+    CheckLoop{Choice != 0 ?}
+    CheckLoop -->|Yes| Show
+    CheckLoop -->|No| Selesai[Exit Program]
     Exit --> Selesai
 ```
 
-### B. Alur Sesi Permainan Keseluruhan <play_game>
+### B. Overall Game Session Flow <play_game>
 
 ```mermaid
 flowchart TD
-    Start[Mulai play_game] --> InputName[Input Nama Pemain]
-    InputName --> Init[Inisialisasi Variabel Game & Pilih Kata Acak]
-    Init --> LoopCond{wrong < 6 DAN Belum Menang?}
+    Start[Start play_game] --> InputName[Input Player Name]
+    InputName --> Init[Init Game Variables & Pick Random Word]
+    Init --> LoopCond{wrong < 6 AND Not Won?}
 
-    LoopCond -->|Ya| Draw[Gambar Hangman & Cetak Info]
-    Draw --> InputGuess[Input Tebakan Huruf]
-    InputGuess --> Process[Jalankan process_guess]
+    LoopCond -->|Yes| Draw[Draw Hangman & Print Info]
+    Draw --> InputGuess[Input Letter Guess]
+    InputGuess --> Process[Execute process_guess]
     Process --> LoopCond
 
-    LoopCond -->|Tidak| EndDraw[Gambar Hangman Terakhir]
-    EndDraw --> CheckWin{Menang?}
+    LoopCond -->|No| EndDraw[Draw Final Hangman]
+    EndDraw --> CheckWin{Won?}
 
-    CheckWin -->|Ya| CalcScore[Hitung Skor]
-    CalcScore --> AskHOF{Simpan ke HOF?}
-    AskHOF -->|Ya| Save[Jalankan save_score] --> Selesai[Selesai play_game]
-    AskHOF -->|Tidak| Selesai
+    CheckWin -->|Yes| CalcScore[Calculate Score]
+    CalcScore --> AskHOF{Save to HOF?}
+    AskHOF -->|Yes| Save[Execute save_score] --> Selesai[End play_game]
+    AskHOF -->|No| Selesai
 
-    CheckWin -->|Tidak| ShowWord[Tampilkan Kata yang Benar] --> Selesai
+    CheckWin -->|No| ShowWord[Show Correct Word] --> Selesai
 ```
 
-### C. Proses Satu Tebakan <process_guess>
+### C. Single Guess Process <process_guess>
 
 ```mermaid
 flowchart TD
-    Start[Mulai process_guess] --> Search[Cari Huruf di Array Guessed <Linear Search>]
-    Search --> CheckExist{Huruf Sudah Ada?}
+    Start[Start process_guess] --> Search[Search Letter in Guessed Array <Linear Search>]
+    Search --> CheckExist{Letter Exists?}
 
-    CheckExist -->|Ya| Ret1[Kembalikan Status 1 <Sudah Ditebak>]
-    CheckExist -->|Tidak| AddGuessed[Catat Huruf ke Array Guessed]
+    CheckExist -->|Yes| Ret1[Return Status 1 <Already Guessed>]
+    CheckExist -->|No| AddGuessed[Record Letter to Guessed Array]
 
-    AddGuessed --> Traversal[Telusuri Kata Rahasia Menggunakan Pointer]
-    Traversal --> CheckChar{Huruf Cocok?}
+    AddGuessed --> Traversal[Traverse Secret Word Using Pointer]
+    Traversal --> CheckChar{Letter Matches?}
 
-    CheckChar -->|Ya| Buka[Buka Huruf di Display Mask] --> LanjutTelusur[Lanjut Karakter Berikutnya]
-    CheckChar -->|Tidak| LanjutTelusur
-    LanjutTelusur --> CheckEnd{Akhir String?}
-    CheckEnd -->|Belum| CheckChar
-    CheckEnd -->|Sudah| EvalMatch{Ada Huruf yang Cocok?}
+    CheckChar -->|Yes| Buka[Reveal Letter in Display Mask] --> LanjutTelusur[Proceed to Next Character]
+    CheckChar -->|No| LanjutTelusur
+    LanjutTelusur --> CheckEnd{End of String?}
+    CheckEnd -->|Not Yet| CheckChar
+    CheckEnd -->|Reached| EvalMatch{Any Letter Matched?}
 
-    EvalMatch -->|Ya| Ret2[Kembalikan Status 2 <Benar>]
-    EvalMatch -->|Tidak| IncWrong[Tambah Jumlah Salah <wrong++>]
-    IncWrong --> Ret0[Kembalikan Status 0 <Salah>]
+    EvalMatch -->|Yes| Ret2[Return Status 2 <Correct>]
+    EvalMatch -->|No| IncWrong[Increment Wrong Count <wrong++>]
+    IncWrong --> Ret0[Return Status 0 <Incorrect>]
 
-    Ret1 --> Selesai[Selesai process_guess]
+    Ret1 --> Selesai[End process_guess]
     Ret2 --> Selesai
     Ret0 --> Selesai
 ```
 
-### D. Proses Penambahan Kata <add_word & insert_word_sorted>
+### D. Word Addition Process <add_word & insert_word_sorted>
 
 ```mermaid
 flowchart TD
-    Start[Mulai add_word] --> CheckLimit{Bank Kata Penuh?}
-    CheckLimit -->|Ya| PrintFull[Tampilkan Pesan Penuh] --> Selesai[Selesai add_word]
-    CheckLimit -->|Tidak| InputWord[Baca Kata Baru dari Input]
+    Start[Start add_word] --> CheckLimit{Word Bank Full?}
+    CheckLimit -->|Yes| PrintFull[Print Full Message] --> Selesai[End add_word]
+    CheckLimit -->|No| InputWord[Read New Word from Input]
 
-    InputWord --> Upper[Ubah ke Huruf Kapital]
-    Upper --> BinSearch[Jalankan binary_search_word]
+    InputWord --> Upper[Convert to Uppercase]
+    Upper --> BinSearch[Execute binary_search_word]
 
-    BinSearch --> CheckFound{Hasil != -1 ?}
-    CheckFound -->|Ya| PrintExist[Tampilkan Pesan Kata Sudah Ada] --> Selesai
-    CheckFound -->|Tidak| InsertSort[Jalankan insert_word_sorted]
+    BinSearch --> CheckFound{Result != -1 ?}
+    CheckFound -->|Yes| PrintExist[Print Word Exists Message] --> Selesai
+    CheckFound -->|No| InsertSort[Execute insert_word_sorted]
 
-    InsertSort --> Alloc[Alokasi Memori Dinamis <malloc>]
-    Alloc --> LoopShift[Geser Elemen Array Lebih Besar ke Kanan]
-    LoopShift --> Assign[Masukkan Alamat Memori Kata ke Array]
-    Assign --> IncCount[Naikkan word_count++]
+    InsertSort --> Alloc[Dynamic Memory Allocation <malloc>]
+    Alloc --> LoopShift[Shift Larger Array Elements to the Right]
+    LoopShift --> Assign[Assign Word Memory Address to Array]
+    Assign --> IncCount[Increment word_count++]
 
-    IncCount --> PrintSukses[Tampilkan Pesan Berhasil Ditambahkan] --> Selesai
+    IncCount --> PrintSukses[Print Success Message] --> Selesai
 ```
 
-### E. Alur Menyimpan Skor dan Pengurutan <save_score & bubble_sort_hof>
+### E. Score Saving and Sorting Flow <save_score & bubble_sort_hof>
 
 ```mermaid
 flowchart TD
-    Start[Mulai save_score] --> CheckQualify{Papan Penuh & Skor Lebih Rendah?}
-    CheckQualify -->|Ya| Reject[Tampilkan Pesan Tidak Layak Masuk HOF] --> Selesai[Selesai save_score]
+    Start[Start save_score] --> CheckQualify{Board Full & Score Lower?}
+    CheckQualify -->|Yes| Reject[Print Unqualified for HOF Message] --> Selesai[End save_score]
 
-    CheckQualify -->|Tidak| GetTime[Ambil Waktu Sistem <localtime>]
-    GetTime --> InsertData[Tulis Nama, Skor, Tanggal ke Array HOF Terbawah]
+    CheckQualify -->|No| GetTime[Get System Time <localtime>]
+    GetTime --> InsertData[Write Name, Score, Date to Bottom of HOF Array]
     InsertData --> CheckCount{hof_count < HOF_SIZE?}
-    CheckCount -->|Ya| IncCount[hof_count++] --> Sort[Jalankan bubble_sort_hof]
-    CheckCount -->|Tidak| Sort
+    CheckCount -->|Yes| IncCount[hof_count++] --> Sort[Execute bubble_sort_hof]
+    CheckCount -->|No| Sort
 
-    Sort --> BubbleOut[Looping Array HOF <Luar>]
-    BubbleOut --> BubbleIn[Looping Array HOF <Dalam>]
-    BubbleIn --> CheckPoints{Poin Saat Ini < Poin Berikutnya?}
-    CheckPoints -->|Ya| Swap[Tukar Posisi Struct Data] --> BubbleInNext[Lanjut Looping Dalam]
-    CheckPoints -->|Tidak| BubbleInNext
-    BubbleInNext --> BubbleOutNext[Lanjut Looping Luar]
-    BubbleOutNext --> PrintSuccess[Tampilkan Pesan Tanggal & Skor Tersimpan] --> Selesai
+    Sort --> BubbleOut[HOF Array Loop <Outer>]
+    BubbleOut --> BubbleIn[HOF Array Loop <Inner>]
+    BubbleIn --> CheckPoints{Current Points < Next Points?}
+    CheckPoints -->|Yes| Swap[Swap Data Struct Positions] --> BubbleInNext[Continue Inner Loop]
+    CheckPoints -->|No| BubbleInNext
+    BubbleInNext --> BubbleOutNext[Continue Outer Loop]
+    BubbleOutNext --> PrintSuccess[Print Date & Score Saved Message] --> Selesai
 ```
 
 ---
 
-_Dokumentasi ini disusun untuk memenuhi standar submisi Proyek Akhir Praktikum Pemrograman Dasar._
+_This documentation is compiled to meet the submission standards for the Basic Programming Practicum Final Project._

@@ -1,10 +1,10 @@
 /* ============================================================
-   TEBAK KATA - Robotika Edition
-   Proyek Akhir Praktikum Dasar Pemrograman
+   WORD GUESS - Robotics Edition
+   Final Project for Basic Programming Practicum
    ------------------------------------------------------------
-   Nama  : Bima Ardhia Vardhan
+   Name  : Bima Ardhia Vardhan
    NIM   : 163251025
-   Kelas : RK-A1
+   Class : RK-A1
    ============================================================ */
 
 #include <stdio.h>
@@ -38,16 +38,16 @@ struct Game {
     int  wrong;
 };
 
-/* ---------- VARIABEL GLOBAL ---------- */
+/* ---------- GLOBAL VARIABLES ---------- */
 const char *word_bank[MAX_WORDS] = {
-    "ALGORITMA", "MOTOR", "NEURON", "ROBOTIKA", "SENSOR"
+    "ALGORITHM", "MOTOR", "NEURON", "ROBOTICS", "SENSOR"
 };
 int word_count = 5;
 
 struct ScoreEntry hall_of_fame[HOF_SIZE];
 int hof_count = 0;
 
-/* ---------- PROTOTIPE FUNGSI ---------- */
+/* ---------- FUNCTION PROTOTYPES ---------- */
 void print_banner(void);
 int  show_menu(void);
 void play_game(void);
@@ -76,8 +76,8 @@ int main(void) {
             case 1: play_game();         break;
             case 2: show_hall_of_fame(); break;
             case 3: add_word();          break;
-            case 0: printf("\nTerima kasih telah bermain!\n"); break;
-            default: printf("\nPilihan tidak valid. Coba lagi.\n");
+            case 0: printf("\nThank you for playing!\n"); break;
+            default: printf("\nInvalid choice. Please try again.\n");
         }
     } while (choice != 0);
 
@@ -86,18 +86,18 @@ int main(void) {
 
 void print_banner(void) {
     printf("\n========================================\n");
-    printf("   TEBAK KATA - Robotika Edition\n");
+    printf("   WORD GUESS - Robotics Edition\n");
     printf("========================================\n");
 }
 
 int show_menu(void) {
     int choice;
     print_banner();
-    printf("  [1] Main game baru\n");
-    printf("  [2] Lihat Hall of Fame\n");
-    printf("  [3] Tambah kata ke bank\n");
-    printf("  [0] Keluar\n");
-    printf("Pilih: ");
+    printf("  [1] Play new game\n");
+    printf("  [2] View Hall of Fame\n");
+    printf("  [3] Add word to bank\n");
+    printf("  [0] Exit\n");
+    printf("Select: ");
     
     if (scanf("%d", &choice) != 1) {
         choice = -1;
@@ -124,12 +124,12 @@ void draw_hangman(int wrong) {
 }
 
 /* ============================================================
-   IMPLEMENTASI FUNGSI KELENGKAPAN MODUL
+   MODULE IMPLEMENTATIONS
    ============================================================ */
 
 void play_game(void) {
     char player_name[NAME_LEN];
-    printf("\nMasukkan nama: ");
+    printf("\nEnter your name: ");
     fgets(player_name, NAME_LEN, stdin);
     player_name[strcspn(player_name, "\n")] = '\0';
     to_upper_str(player_name);
@@ -150,20 +150,20 @@ void play_game(void) {
     }
     g.display[len] = '\0';
 
-    printf("Kata dipilih! Panjang: %d huruf.\n", len);
+    printf("Word selected! Length: %d letters.\n", len);
 
     /* Main game session loop */
     while (g.wrong < MAX_WRONG && !is_won(&g)) {
         draw_hangman(g.wrong);
         printf("\n========================\n");
-        printf("Kata : ");
+        printf("Word : ");
         for (int i = 0; i < len; i++) {
             printf("%c ", g.display[i]);
         }
         
-        printf("\nNyawa: %d   Salah ditebak: ", MAX_WRONG - g.wrong);
+        printf("\nLives: %d   Incorrect guesses: ", MAX_WRONG - g.wrong);
         if (g.wrong == 0) {
-            printf("(belum ada)");
+            printf("(none yet)");
         } else {
             for (int i = 0; i < g.guessed_count; i++) {
                 if (!strchr(g.secret, g.guessed[i])) {
@@ -172,7 +172,7 @@ void play_game(void) {
             }
         }
         
-        printf("\nTebak huruf: ");
+        printf("\nGuess a letter: ");
         char guess;
         scanf(" %c", &guess);
         int c; while ((c = getchar()) != '\n' && c != EOF);
@@ -180,25 +180,25 @@ void play_game(void) {
 
         int status = process_guess(&g, guess);
         if (status == 1) {
-            printf("-> Huruf '%c' sudah pernah ditebak! Coba huruf lain.\n", guess);
+            printf("-> Letter '%c' has already been guessed! Try a different one.\n", guess);
         } else if (status == 2) {
-            printf("-> Benar! Huruf '%c' ada di kata.\n", guess);
+            printf("-> Correct! The letter '%c' is in the word.\n", guess);
         } else {
-            printf("-> Salah! '%c' tidak ada. (nyawa berkurang)\n", guess);
+            printf("-> Incorrect! '%c' is not in the word. (life lost)\n", guess);
         }
     }
 
     draw_hangman(g.wrong);
     
     if (is_won(&g)) {
-        printf("\n*** SELAMAT! Kamu menebak kata: %s ***\n", g.secret);
+        printf("\n*** CONGRATULATIONS! You guessed the word: %s ***\n", g.secret);
         int sisa_nyawa = MAX_WRONG - g.wrong;
         int skor = (sisa_nyawa * 100) + (len * 20);
         
-        printf("Nyawa tersisa: %d\n", sisa_nyawa);
-        printf("Skor = (%d x 100) + (%d x 20) = %d\n", sisa_nyawa, len, skor);
+        printf("Remaining lives: %d\n", sisa_nyawa);
+        printf("Score = (%d x 100) + (%d x 20) = %d\n", sisa_nyawa, len, skor);
 
-        printf("Apakah skor ini layak masuk Hall of Fame? (Y/T): ");
+        printf("Is this score worthy of the Hall of Fame? (Y/N): ");
         char ans;
         scanf(" %c", &ans);
         int c; while ((c = getchar()) != '\n' && c != EOF);
@@ -207,7 +207,7 @@ void play_game(void) {
             save_score(player_name, skor);
         }
     } else {
-        printf("\nGAME OVER! Kata yang benar adalah: %s\n", g.secret);
+        printf("\nGAME OVER! The correct word was: %s\n", g.secret);
     }
 }
 
@@ -308,11 +308,11 @@ void show_hall_of_fame(void) {
     printf("========================================\n");
     
     if (hof_count == 0) {
-        printf("Belum ada data skor.\n");
+        printf("No score data available yet.\n");
         return;
     }
     
-    printf("Rank  Nama                  Skor   Tanggal\n");
+    printf("Rank  Name                  Score  Date\n");
     printf("----------------------------------------\n");
     for (int i = 0; i < hof_count; i++) {
         printf("%-4d  %-20s  %-4d   %02d/%02d/%04d\n",
@@ -327,7 +327,7 @@ void show_hall_of_fame(void) {
 
 void save_score(const char *name, int points) {
     if (hof_count == HOF_SIZE && points <= hall_of_fame[HOF_SIZE - 1].points) {
-        printf("Maaf, skor belum cukup tinggi untuk masuk Hall of Fame.\n");
+        printf("Sorry, the score is not high enough to enter the Hall of Fame.\n");
         return;
     }
 
@@ -349,18 +349,18 @@ void save_score(const char *name, int points) {
     bubble_sort_hof(hall_of_fame, hof_count);
 
     /* Find where the player was actually sorted to show correct prompt later */
-    printf("Skor %s (%d) tersimpan, tanggal %02d/%02d/%04d.\n", 
+    printf("Score for %s (%d) saved on %02d/%02d/%04d.\n", 
            name, points, tm_info->tm_mday, tm_info->tm_mon + 1, tm_info->tm_year + 1900);
 }
 
 void add_word(void) {
     if (word_count >= MAX_WORDS) {
-        printf("Bank kata penuh!\n");
+        printf("Word bank is full!\n");
         return;
     }
 
     char new_word[WORD_LEN];
-    printf("\nMasukkan kata baru: ");
+    printf("\nEnter a new word: ");
     fgets(new_word, WORD_LEN, stdin);
     new_word[strcspn(new_word, "\n")] = '\0';
 
@@ -368,18 +368,18 @@ void add_word(void) {
 
     to_upper_str(new_word);
 
-    printf("Mengecek bank kata (binary search)...\n");
+    printf("Checking word bank (binary search)...\n");
     if (binary_search_word(word_bank, word_count, new_word) != -1) {
-        printf("'%s' sudah ada di bank kata.\n", new_word);
+        printf("'%s' is already in the word bank.\n", new_word);
     } else {
-        printf("'%s' belum ada. Menyisipkan pada posisi terurut.\n", new_word);
+        printf("'%s' is not in the bank. Inserting into sorted position.\n", new_word);
         insert_word_sorted(word_bank, &word_count, new_word);
 
-        printf("Bank kata sekarang: ");
+        printf("Current word bank: ");
         for (int i = 0; i < word_count; i++) {
             printf("%s ", word_bank[i]);
         }
-        printf("\nKata berhasil ditambahkan.\n");
+        printf("\nWord successfully added.\n");
     }
 }
 
